@@ -237,9 +237,41 @@
     <!-- CHANGELOG:START -->
     <article class="rel">
       <div class="rel-meta">
+        <h2 class="rel-ver">0.9.1</h2>
+        <time class="rel-date" datetime="2026-09-26">26 September 2026</time>
+        <span class="rel-latest">Latest</span>
+      </div>
+      <div class="rel-body">
+        <p class="rel-intro">A bug-fix release, with one long-standing annoyance sorted out: reacting to a message no longer means picking from twenty emoji.</p>
+        <section class="rel-group">
+          <h3 class="rel-tag t-added">Added</h3>
+          <ul>
+            <li><strong>Search every emoji when you react.</strong> The reaction picker opens on the same twenty as before, but now you can type — <code>dragon</code>, <code>taco</code>, <code>coffee</code> — and search the full set, the same one <code>:shortcode</code> autocomplete uses in the composer. Arrow keys move the highlight, Enter reacts, Escape closes. LinkedIn accepts any emoji as a reaction; the short list was ours, not theirs.</li>
+          </ul>
+        </section>
+        <section class="rel-group">
+          <h3 class="rel-tag t-changed">Changed</h3>
+          <ul>
+            <li><strong>Message actions moved onto the message.</strong> The quick reactions, reply, edit and unsend now float in a small card on the top right of each bubble instead of sitting in the gutter beside it. The gutter could not always spare the room: on a wide message the buttons ran off the edge of the pane, taking the emoji picker with them.</li>
+            <li><strong>The Other tab no longer interrupts you.</strong> A message that lands in Other never raises a desktop notification — it still arrives, still shows as unread, and still raises the in-app toast if you are looking at inƒlow. A second inbox you did not ask to be interrupted by should not interrupt you.</li>
+          </ul>
+        </section>
+        <section class="rel-group">
+          <h3 class="rel-tag t-fixed">Fixed</h3>
+          <ul>
+            <li><strong>A thread you accepted an invitation for can now be opened.</strong> Accepting an invitation puts a placeholder in the list while LinkedIn creates the real thread. If that thread took more than fifteen seconds to appear — or you clicked away while waiting — the placeholder was stranded, and because the list keeps only the newest thread per person, it hid the real one. Clicking the row opened an empty composer rather than the message that came with the invitation, which looked like a profile that had never synced. Stranded placeholders are now cleared once the real thread arrives, and can no longer hide it in the meantime.</li>
+            <li><strong>The reaction picker stays on screen.</strong> It used to open in a fixed direction, so near either edge of the thread pane it was cut off — the outer columns simply were not there. It also rendered <em>behind</em> any message below it. Both fixed: it now opens toward whichever side has room and paints above the conversation.</li>
+            <li><strong>inƒlow stopped re-reading your whole archive every fifteen minutes.</strong> Each inbox category was being paginated from end to end on a fifteen-minute timer, hundreds of requests that found nothing new — anything that changes comes back to the top of the list, where a couple of pages find it. That traffic is what runs into LinkedIn's rate limits, which is what makes sync fall behind. A full pass still runs, every six hours, and still checks for conversations deleted elsewhere.</li>
+            <li><strong>Clicking the icon while dragging a tab works.</strong> Chrome locks the tab strip during a tab drag, and inƒlow gave up waiting after two seconds — shorter than an ordinary drag — so the click was silently dropped. It now waits out the drag.</li>
+          </ul>
+        </section>
+      </div>
+    </article>
+
+    <article class="rel">
+      <div class="rel-meta">
         <h2 class="rel-ver">0.9.0</h2>
         <time class="rel-date" datetime="2026-09-14">14 September 2026</time>
-        <span class="rel-latest">Latest</span>
       </div>
       <div class="rel-body">
         <p class="rel-intro"><img class="rel-shot" src="https://inflow.im/img/0.9.0-swipe-actions.gif" alt="A conversation row dragged left until a green Archive panel fills it, then collapsing away as the list closes up; a second row dragged right to reveal an amber Star panel, springing back with a star beside the name" loading="lazy"></p>

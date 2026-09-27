@@ -4,6 +4,57 @@ All notable changes to inflow are documented here. This project follows
 [semantic versioning](https://semver.org/) and the format of
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.9.1] - 2026-09-26
+
+A bug-fix release, with one long-standing annoyance sorted out: reacting to a
+message no longer means picking from twenty emoji.
+
+### Added
+- **Search every emoji when you react.** The reaction picker opens on the same
+  twenty as before, but now you can type — `dragon`, `taco`, `coffee` — and
+  search the full set, the same one `:shortcode` autocomplete uses in the
+  composer. Arrow keys move the highlight, Enter reacts, Escape closes.
+  LinkedIn accepts any emoji as a reaction; the short list was ours, not
+  theirs.
+
+### Changed
+- **Message actions moved onto the message.** The quick reactions, reply, edit
+  and unsend now float in a small card on the top right of each bubble instead
+  of sitting in the gutter beside it. The gutter could not always spare the
+  room: on a wide message the buttons ran off the edge of the pane, taking the
+  emoji picker with them.
+- **The Other tab no longer interrupts you.** A message that lands in Other
+  never raises a desktop notification — it still arrives, still shows as
+  unread, and still raises the in-app toast if you are looking at inflow. A
+  second inbox you did not ask to be interrupted by should not interrupt you.
+
+### Fixed
+- **A thread you accepted an invitation for can now be opened.** Accepting an
+  invitation puts a placeholder in the list while LinkedIn creates the real
+  thread. If that thread took more than fifteen seconds to appear — or you
+  clicked away while waiting — the placeholder was stranded, and because the
+  list keeps only the newest thread per person, it hid the real one. Clicking
+  the row opened an empty composer rather than the message that came with the
+  invitation, which looked like a profile that had never synced. Stranded
+  placeholders are now cleared once the real thread arrives, and can no longer
+  hide it in the meantime.
+- **The reaction picker stays on screen.** It used to open in a fixed
+  direction, so near either edge of the thread pane it was cut off — the outer
+  columns simply were not there. It also rendered *behind* any message below
+  it. Both fixed: it now opens toward whichever side has room and paints above
+  the conversation.
+- **inflow stopped re-reading your whole archive every fifteen minutes.** Each
+  inbox category was being paginated from end to end on a fifteen-minute
+  timer, hundreds of requests that found nothing new — anything that changes
+  comes back to the top of the list, where a couple of pages find it. That
+  traffic is what runs into LinkedIn's rate limits, which is what makes sync
+  fall behind. A full pass still runs, every six hours, and still checks for
+  conversations deleted elsewhere.
+- **Clicking the icon while dragging a tab works.** Chrome locks the tab strip
+  during a tab drag, and inflow gave up waiting after two seconds — shorter
+  than an ordinary drag — so the click was silently dropped. It now waits out
+  the drag.
+
 ## [0.9.0] - 2026-09-14
 
 ![A conversation row dragged left until a green Archive panel fills it, then collapsing away as the list closes up; a second row dragged right to reveal an amber Star panel, springing back with a star beside the name](https://inflow.im/img/0.9.0-swipe-actions.gif)
