@@ -1,0 +1,54 @@
+{
+  "name": "inflow-chatgpt",
+  "type": "module",
+  "engines": {
+    "node": ">=22.22.2"
+  },
+  "version": "1.1.0",
+  "description": "Inflow LinkedIn inbox for ChatGPT, powered by mcp-use v2 and OpenAI MCP Extensions",
+  "license": "MIT",
+  "homepage": "https://github.com/grinich/inflow",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "chatgpt plugins",
+    "claude connector",
+    "mcp-app",
+    "mcp-use",
+    "manufact"
+  ],
+  "scripts": {
+    "build": "mcp-use build --inline",
+    "dev": "mcp-use dev",
+    "start": "mcp-use start",
+    "deploy": "mcp-use deploy",
+    "typecheck": "mcp-use typecheck",
+    "bridge": "node --env-file=.env.bridge bridge/index.mjs",
+    "test": "tsx --test tests/*.test.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/ext-apps": "^1.7.5",
+    "@openai/mcp-extensions": "^0.1.0",
+    "date-fns": "^4.4.0",
+    "gemoji": "^8.1.0",
+    "jose": "^6.2.12",
+    "mcp-use": "2.7.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "ws": "^8.22.0",
+    "zod": "^4.4.3",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@mcp-use/client": "^2.4.0",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^22.20.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/ws": "^8.18.2",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "private": true
+}
