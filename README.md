@@ -1,5 +1,9 @@
 # Inflow for ChatGPT
 
+![Inflow inbox and follow-up panel in ChatGPT, with personal text replaced by placeholders](assets/chatgpt-inbox-anonymized.png)
+
+*Anonymized preview: personal text has been replaced with placeholders.*
+
 This fork of [grinich/inflow](https://github.com/grinich/inflow) adds an experimental
 ChatGPT integration to Inflow, a Chrome extension for LinkedIn messaging.
 It brings Inflow’s inbox UI into a ChatGPT widget and exposes its existing agent
