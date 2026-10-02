@@ -14,11 +14,14 @@ export function addDisplayMetadata(value: any): any {
   if (Array.isArray(value)) return value.map(addDisplayMetadata);
   if (!value || typeof value !== 'object') return value;
   if (Array.isArray(value.contents)) {
-    return {...value, contents: value.contents.map((item: any) => item.uri === inboxUri
-      ? {...item, _meta: {...item._meta, ...openAIResourceMeta}}
-      : item)};
+    return {
+      ...value,
+      contents: value.contents.map((item: any) =>
+        item.uri === inboxUri ? { ...item, _meta: { ...item._meta, ...openAIResourceMeta } } : item,
+      ),
+    };
   }
-  if (value.result) return {...value, result: addDisplayMetadata(value.result)};
+  if (value.result) return { ...value, result: addDisplayMetadata(value.result) };
   return value;
 }
 
@@ -30,20 +33,26 @@ export function addDisplayMetadata(value: any): any {
  */
 export const openAIViewMetadata: MiddlewareHandler = async (c, next) => {
   if (c.req.method !== 'POST') return next();
-  const request = await c.req.raw.clone().json().catch(() => null);
+  const request = await c.req.raw
+    .clone()
+    .json()
+    .catch(() => null);
   if (request?.method !== 'resources/read' || request.params?.uri !== inboxUri) return next();
   await next();
   if (!c.res.ok) return;
   const type = c.res.headers.get('content-type') || '';
   if (!type.includes('application/json') && !type.includes('text/event-stream')) return;
   const rewrite = (json: string) => {
-    try { return JSON.stringify(addDisplayMetadata(JSON.parse(json))); }
-    catch { return json; }
+    try {
+      return JSON.stringify(addDisplayMetadata(JSON.parse(json)));
+    } catch {
+      return json;
+    }
   };
   const headers = new Headers(c.res.headers);
   headers.delete('content-length');
   if (type.includes('application/json')) {
-    c.res = new Response(rewrite(await c.res.text()), {status: c.res.status, headers});
+    c.res = new Response(rewrite(await c.res.text()), { status: c.res.status, headers });
     return;
   }
   // Modern hosts can keep an SSE response open. Forward each event as it
@@ -51,21 +60,36 @@ export const openAIViewMetadata: MiddlewareHandler = async (c, next) => {
   const decoder = new TextDecoder();
   const encoder = new TextEncoder();
   let pending = '';
-  const transform = new TransformStream<Uint8Array,Uint8Array>({
+  const transform = new TransformStream<Uint8Array, Uint8Array>({
     transform(chunk, controller) {
-      pending += decoder.decode(chunk, {stream:true});
+      pending += decoder.decode(chunk, { stream: true });
       let match: RegExpMatchArray | null;
       while ((match = pending.match(/\r?\n\r?\n/))) {
         const end = match.index! + match[0].length;
-        const event = pending.slice(0,end);
+        const event = pending.slice(0, end);
         pending = pending.slice(end);
-        controller.enqueue(encoder.encode(event.replace(/^data: ?([^\r\n]*)/gm, (_line,data:string)=>`data: ${rewrite(data)}`)));
+        controller.enqueue(
+          encoder.encode(
+            event.replace(
+              /^data: ?([^\r\n]*)/gm,
+              (_line, data: string) => `data: ${rewrite(data)}`,
+            ),
+          ),
+        );
       }
     },
     flush(controller) {
       pending += decoder.decode();
-      if (pending) controller.enqueue(encoder.encode(pending.replace(/^data: ?([^\r\n]*)/gm,(_line,data:string)=>`data: ${rewrite(data)}`)));
+      if (pending)
+        controller.enqueue(
+          encoder.encode(
+            pending.replace(
+              /^data: ?([^\r\n]*)/gm,
+              (_line, data: string) => `data: ${rewrite(data)}`,
+            ),
+          ),
+        );
     },
   });
-  c.res = new Response(c.res.body?.pipeThrough(transform), {status:c.res.status,headers});
+  c.res = new Response(c.res.body?.pipeThrough(transform), { status: c.res.status, headers });
 };

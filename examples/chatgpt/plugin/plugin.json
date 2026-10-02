@@ -12,17 +12,10 @@
         "shortDescription": "A calmer home for your LinkedIn inbox",
         "longDescription": "Browse LinkedIn conversations, find messages, and reply from a sidebar inbox. Connects to your own Inflow Chrome extension through a private bridge. Requires Chrome and the bridge to remain running.",
         "category": "Productivity",
-        "capabilities": [
-          "Interactive",
-          "Read",
-          "Write"
-        ],
+        "capabilities": ["Interactive", "Read", "Write"],
         "composerIcon": "./assets/icon.svg",
         "logo": "./assets/icon.svg",
-        "defaultPrompt": [
-          "Open my LinkedIn inbox",
-          "Summarize my unread LinkedIn conversations"
-        ],
+        "defaultPrompt": ["Open my LinkedIn inbox", "Summarize my unread LinkedIn conversations"],
         "brandColor": "#1D6547"
       }
     }

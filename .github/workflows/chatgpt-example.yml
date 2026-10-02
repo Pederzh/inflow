@@ -1,9 +1,9 @@
 name: ChatGPT example
 on:
   pull_request:
-    paths: ['examples/chatgpt/**', '.github/workflows/chatgpt-example.yml']
+    paths: ['examples/chatgpt/**', 'mcpb/server/**', '.github/workflows/chatgpt-example.yml']
   push:
-    paths: ['examples/chatgpt/**', '.github/workflows/chatgpt-example.yml']
+    paths: ['examples/chatgpt/**', 'mcpb/server/**', '.github/workflows/chatgpt-example.yml']
 permissions:
   contents: read
 jobs:
@@ -20,6 +20,8 @@ jobs:
           cache: npm
           cache-dependency-path: examples/chatgpt/package-lock.json
       - run: npm ci
+      - run: npm run check:upstream
+      - run: npm run format:check
       - run: npm test
       - run: npm run typecheck
       - run: npm run build
