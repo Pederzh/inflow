@@ -1,3 +1,51 @@
+# Inflow for ChatGPT
+
+This fork of [grinich/inflow](https://github.com/grinich/inflow) adds an experimental
+ChatGPT integration to Inflow, a Chrome extension for LinkedIn messaging.
+It brings Inflow’s inbox UI into a ChatGPT widget and exposes its existing agent
+tools through an authenticated MCP server.
+
+You can browse and search conversations, read threads, compose replies, and
+manage your inbox. Write actions follow the permissions and send limits you
+configure in Inflow. The integration adapts Inflow’s original UI, uses **mcp-use
+v2** for standard MCP functionality, and uses **@openai/mcp-extensions** for
+OpenAI-specific widget and entrypoint metadata.
+
+### How it connects
+
+```text
+ChatGPT → your authenticated MCP server → your local bridge → Inflow in Chrome
+```
+
+The MCP server can run in the cloud, including on Manufact. LinkedIn sync still
+runs through your local Chrome session, so Chrome and the bridge must remain
+running. Browser cookies stay local; requested messages pass through the server
+to the connected client. The application does not persist those messages on the
+server.
+
+### Run your own instance
+
+Start with [the integration setup guide](examples/chatgpt/README.md). The code,
+Dockerfile, plugin template, and tests live in [`examples/chatgpt`](examples/chatgpt).
+Each installer provides their own server URL and credentials. This repository
+contains no personal inbox data, pairing state, or deployed access credentials.
+The server currently supports one owner per deployment; it is not a shared
+multi-user service.
+
+### Status and upstream contribution
+
+The integration includes one widget with inbox, thread, and connection views,
+reuses its widget session when changing views, and advertises fullscreen and
+sidebar entrypoints. Actual host placement and navbar pinning remain unverified.
+The setup guide also documents a known optional client subscription issue.
+
+The integration has been proposed upstream in
+[draft PR #19](https://github.com/grinich/inflow/pull/19). Inflow’s original code
+and documentation are retained below, with MIT attribution to the original
+project. This fork is not affiliated with LinkedIn or OpenAI.
+
+---
+
 <p align="center">
   <img src="assets/screenshot-light.png" alt="inflow — light theme conversation view" width="100%">
 </p>
